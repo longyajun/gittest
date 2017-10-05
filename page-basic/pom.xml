@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ccblife.page</groupId>
+	<artifactId>page-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<description>建信人寿移动渠道</description>
+
+	
+	<!--此处配置打包路径，路径定位到pom.xml的上层目录-->
+	<!--生产包打包样例-->
+	<modules>
+		<!--config模块及mbfw模块必须打包-->
+		<module>page-config</module>
+		<module>page-basic</module>
+		<!--以下模块可选打包-->
+		
+		<module>page-service</module>
+		<module>page-web</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/environment/${package.target}</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<!-- <properties> <package.target>dev</package.target> <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+		<nexus.url>http://10.100.16.124:8081/nexus/content/groups/public/</nexus.url> 
+		<nexus-releases.url>http://10.100.16.124:8081/nexus/content/repositories/releases/</nexus-releases.url> 
+		<nexus-snapshots.url>http://10.100.16.124:8081/nexus/content/repositories/snapshots/</nexus-snapshots.url> 
+		<ctower.version>3.1.50</ctower.version> <spring.version>3.2.14.RELEASE</spring.version> 
+		<elife.version>0.0.1</elife.version> </properties> -->
+
+	<!-- == 配置开发/测试/生产环境 == -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<package.target>dev</package.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>sit</id>
+			<properties>
+				<package.target>sit</package.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<package.target>prod</package.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>pre_prod</id>
+			<properties>
+				<package.target>pre_prod</package.target>
+			</properties>
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<package.target>uat</package.target>
+			</properties>
+		</profile>
+	</profiles>
+
+	<!-- 设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找. -->
+	<!-- <repositories> <repository> <id>nexus</id> <name>Team Nexus Repository</name> 
+		<url>${nexus.url}</url> <snapshots> <enabled>true</enabled> </snapshots> 
+		</repository> <repository> <id>maven-restlet</id> <name>Public online Restlet 
+		repository</name> <url>http://maven.restlet.org</url> </repository> </repositories> -->
+
+	<!-- 设定插件仓库, 如有Nexus私服, 取消注释并指向正确的服务器地址. -->
+	<!-- <pluginRepositories> <pluginRepository> <id>nexus</id> <name>Team Nexus 
+		Repository</name> <url>${nexus.url}</url> <snapshots> <enabled>false</enabled> 
+		</snapshots> </pluginRepository> </pluginRepositories> -->
+
+	<!-- 部署构件至仓库设置 -->
+	<!-- <distributionManagement> <repository> <id>nexus-releases</id> <name>Nexus 
+		Releases Repository</name> <url>${nexus-releases.url}</url> </repository> 
+		<snapshotRepository> <id>nexus-snapshots</id> <name>Nexus Snapshots Repository</name> 
+		<url>${nexus-snapshots.url}</url> </snapshotRepository> </distributionManagement> -->
+
+
+</project>
