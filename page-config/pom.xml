@@ -1,1 +1,86 @@
 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>ccblife.page</groupId>
+		<artifactId>page-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>page-config</artifactId>
+	<packaging>jar</packaging>
+	
+	<description>配置文件包，打包为jar。</description>
+
+	<profiles>
+		<!-- 测试环境 -->
+		<profile>
+			<id>uat</id>
+			<properties>
+				<profiles.active>uat</profiles.active>
+			</properties>
+		</profile>
+		<!-- 生产环境 -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<profiles.active>prod</profiles.active>
+			</properties>
+		</profile>
+		<!-- 开发环境 -->
+		<profile>
+			<id>sit</id>
+			<properties>
+				<profiles.active>sit</profiles.active>
+			</properties>
+		</profile>
+		<!-- 本地开发环境 -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<profiles.active>dev</profiles.active>
+			</properties>
+			<activation>
+				<!-- 设置为默认激活 -->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+	</profiles>
+
+	<build>
+		<finalName>${artifactId}-${version}</finalName>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->  
+				<excludes>
+					<exclude>dev/*</exclude>
+					<exclude>sit/*</exclude>
+					<exclude>uat/*</exclude>
+					<exclude>prod/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<!-- 根据参数指定资源目录 --> 
+				<directory>src/main/resources/${profiles.active}</directory>
+			</resource>
+		</resources> 
+		
+		<!-- 设置JDK版本 -->
+		<plugins>
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <configuration>
+	                <source>1.6</source>
+	                <target>1.6</target>
+	            </configuration>
+	        </plugin>
+		</plugins>
+	</build>
+
+</project>
